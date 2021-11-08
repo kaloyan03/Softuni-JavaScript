@@ -1,6 +1,17 @@
-node_modules
-package.json
-package-lock.json
-test.js
-index.html
-demo.js
+/JS Advanced/08-classesExercise/node_modules
+/JS Advanced/08-classesExercise/package.json
+/JS Advanced/08-classesExercise/package-lock.json
+/JS Advanced/08-classesExercise/test
+/JS Advanced/08-classesExercise/node_modules
+
+
+/JS Advanced/07-UnitTestingLab/node_modules
+/JS Advanced/07-UnitTestingLab/package.json
+/JS Advanced/07-UnitTestingLab/package-lock.json
+/JS Advanced/06-FunctionsAdvancedExercise/test.js
+/JS Advanced/05-DOMManipulationsLab/Demo
+/JS Advanced/05-DOMManipulationsExercises/*.js
+/JS Advanced/05-DOMManipulationsExercises/*.py
+/JS Advanced/04-DOM_Exercise/test.js
+/JS Advanced/03-objectsAndCompositionLab/demo.js
+/JS Advanced/03-objectsAndCompositionExercise/test.js
