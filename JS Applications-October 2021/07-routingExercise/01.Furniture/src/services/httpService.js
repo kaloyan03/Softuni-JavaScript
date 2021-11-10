@@ -1,4 +1,6 @@
-function jsonRequest(requestMethod, url, element, authRequest) {
+import authService from './authService.js';
+
+async function jsonRequest(requestMethod, url, element, authRequest, skipResult) {
     let fetchBody = {
         method: requestMethod.toUpperCase(),
         headers: {
@@ -8,15 +10,23 @@ function jsonRequest(requestMethod, url, element, authRequest) {
     }
 
     if (authRequest === true) {
-        fetchBody['headers']['X-Authorization'] = authentication.getToken()
+        fetchBody['headers']['X-Authorization'] = authService.getAuthToken();
     } 
 
     if (element !== undefined) {
         fetchBody['body'] = JSON.stringify(element);
     }
 
-    return fetch(url, fetchBody)
-    .then(body => body.json());
+    let result = undefined;
+
+    if (!skipResult) {
+        result = await fetch(url, fetchBody)
+        .then(body => body.json())
+    } else {
+        result = await fetch(url, fetchBody)
+    }
+    
+    return result;
 }
 
 export { jsonRequest };

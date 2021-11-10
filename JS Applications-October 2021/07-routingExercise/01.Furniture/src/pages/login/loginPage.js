@@ -1,7 +1,5 @@
-import { registerPageTemplate } from "./registerTemplate.js";
+import { loginPageTemplate } from "./loginTemplate.js";
 import authService from "../../services/authService.js";
-import helper from "../../helper.js";
-
 
 async function submitForm(context, e) {
     e.preventDefault();
@@ -10,19 +8,13 @@ async function submitForm(context, e) {
 
     let email = formData.get('email');
     let password = formData.get('password');
-    let repeatedPassword = formData.get('rePass');
-
-    if (!helper.checkIfPasswordsMatch(password, repeatedPassword)) {
-        alert('Passwords are not matching!');
-        return;
-    }
 
     let newUser = {
         email,
         password,
     }
 
-    await authService.registerUser(newUser);
+    await authService.loginUser(newUser);
     
     context.page.redirect('/dashboard');
 }
@@ -34,12 +26,13 @@ function viewPage(context) {
     let form = {
         submitHandler: boundSubmitForm,
     }
-    let templateResult = registerPageTemplate(form);
-    context.renderView(templateResult)
+
+    let templateResult = loginPageTemplate(form);
+    context.renderView(templateResult);
 }
 
-let registerPage = {
+let loginPage = {
     viewPage,
 }
 
-export default registerPage;
+export default loginPage;
