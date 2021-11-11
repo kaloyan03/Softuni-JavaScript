@@ -6,7 +6,7 @@ export const navigationTemplate = (navInfo) => html`
             ${navInfo['isLoggedIn']
             ? html`<div id="user">
                 <a id="createLink" href="/create-furniture" class="${ifDefined(navInfo['currentPage'].startsWith('/create-furniture') ? 'active' : undefined)}">Create Furniture</a>
-                <a id="profileLink" href="/my-publications" class="${ifDefined(navInfo['currentPage'].startsWith('/my-publications') ? 'active' : undefined)}">My Publications</a>
+                <a id="profileLink" href="/my-furniture" class="${ifDefined(navInfo['currentPage'].startsWith('/my-furniture') ? 'active' : undefined)}">My Publications</a>
                 <a id="logoutBtn" href="/logout" class="${ifDefined(navInfo['currentPage'].startsWith('/logout') ? 'active' : undefined)}">Logout</a>
             </div>`
             : html`<div id="guest">

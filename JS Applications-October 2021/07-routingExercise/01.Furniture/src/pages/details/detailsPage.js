@@ -4,7 +4,12 @@ import authService from "../../services/authService.js";
 
 
 async function deleteHandler(context, id, e) {
-    let result = await furnitureService.deleteDashboard(id)
+    e.preventDefault(); 
+    let confirmed = confirm('Are you sure you want to delete this?');
+    if (!confirmed) {
+        return;
+    }
+    await furnitureService.deleteDashboard(id)
     context.page.redirect('/dashboard');
 }
 

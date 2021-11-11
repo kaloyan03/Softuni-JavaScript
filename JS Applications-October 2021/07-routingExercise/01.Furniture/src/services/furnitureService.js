@@ -22,6 +22,9 @@ async function deleteDashboard(id) {
     return await jsonRequest('delete', `${baseUrl}/${id}`,undefined,true)
 }
 
+async function getUserDashboards(id) {
+    return await jsonRequest('get', `${baseUrl}?where=_ownerId%3D%22${id}%22`, undefined, true)
+}
 
 export default {
     getDashboards,
@@ -29,4 +32,5 @@ export default {
     createDashboard,
     updateDashboard,
     deleteDashboard,
+    getUserDashboards,
 }
