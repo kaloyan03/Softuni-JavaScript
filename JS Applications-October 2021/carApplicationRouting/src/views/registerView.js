@@ -1,8 +1,7 @@
 import { html } from '../../node_modules/lit-html/lit-html.js';
 
 
-import { registerUser } from '../services/authService.js';
-import { renderView } from '../renderingMiddleware.js';
+import { registerUser, saveDataToStorage } from '../services/authService.js';
 
 const registerPageTemplate = (submitHandler) => html`
     <section id='register-page'>
@@ -31,20 +30,37 @@ const registerPageTemplate = (submitHandler) => html`
     </section>
 `
 
-export function registerPage(context) {
-    const submitHandler = (e) => {
-        e.preventDefault();
-        let formData = new FormData(e.target);
-        let user = {
-            email: formData.get('email'),
-            password: formData.get('password'),
-        }
+let route = undefined;
+let renderHandler = undefined;
 
-        registerUser(user)
+function initialize(givenRoute, givenRenderHandler) {
+    route = givenRoute;
+    renderHandler = givenRenderHandler;
+}
 
-        context.page.redirect('/home');
+const submitHandler = (e) => {
+    e.preventDefault();
+    let formData = new FormData(e.target);
+    let user = {
+        email: formData.get('email'),
+        password: formData.get('password'),
     }
 
+    registerUser(user)
+    .then(result => {
+        saveDataToStorage(result['accessToken'], result['email'], result['_id'])
+        route.redirect('/home');
+    })
+
+    route.redirect('/home');
+}
+
+function registerView() {
     let templateResult = registerPageTemplate(submitHandler);
-    renderView(templateResult);
+    renderHandler(templateResult);
+}
+
+export default {
+    registerView,
+    initialize,
 }

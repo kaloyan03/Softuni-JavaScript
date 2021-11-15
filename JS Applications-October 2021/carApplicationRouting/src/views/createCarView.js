@@ -1,5 +1,4 @@
 import { html } from '../../node_modules/lit-html/lit-html.js';
-import { renderView } from '../renderingMiddleware.js';
 import { createCar } from '../services/carsService.js';
 
 const createCarTemplate = (onClick) => html`
@@ -32,28 +31,41 @@ const createCarTemplate = (onClick) => html`
     </form>
 </section>
 `
+let route = undefined;
+let renderHandler = undefined;
 
-export function createCarPage(context) {
-    const clickHandler = (e) => {
-        e.preventDefault();
-        let brandElement = document.getElementById('brand');
-        let modelElement = document.getElementById('model');
-        let priceElement = document.getElementById('price');
-        let imageElement = document.getElementById('image');
-        let descriptionElement = document.getElementById('description');
-        let newCar = {
-            brand: brandElement.value,
-            model: modelElement.value,
-            image: imageElement.value,
-            price: priceElement.value,
-            description: descriptionElement.value,
-        }
-        
-        createCar(newCar)
+function initialize(givenRoute, givenRenderHandler) {
+    route = givenRoute;
+    renderHandler = givenRenderHandler;
+}
 
-        context.page.redirect('/cars');
+const clickHandler = (e) => {
+    e.preventDefault();
+    let brandElement = document.getElementById('brand');
+    let modelElement = document.getElementById('model');
+    let priceElement = document.getElementById('price');
+    let imageElement = document.getElementById('image');
+    let descriptionElement = document.getElementById('description');
+    let newCar = {
+        brand: brandElement.value,
+        model: modelElement.value,
+        image: imageElement.value,
+        price: priceElement.value,
+        description: descriptionElement.value,
     }
+    
+    createCar(newCar)
 
+    route.redirect('/cars');
+}
+
+
+export function createCarView() {
     let templateResult = createCarTemplate(clickHandler);
-    renderView(templateResult);
+    renderHandler(templateResult);
+}
+
+export default {
+    initialize,
+    createCarView,
 }

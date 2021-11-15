@@ -2,7 +2,6 @@ import { html } from '../../node_modules/lit-html/lit-html.js';
 
 
 import { getCar } from '../services/carsService.js';
-import { renderView } from '../renderingMiddleware.js';
 
 const carDescriptionTemplate = (car) => html`
 <div class="card mb-3">
@@ -15,11 +14,26 @@ const carDescriptionTemplate = (car) => html`
 </div>
 
 `
-export function carDescriptionPage(context) {
+
+let route = undefined;
+let renderHandler = undefined;
+
+function initialize(givenRoute, givenRenderHandler) {
+    route = givenRoute;
+    renderHandler = givenRenderHandler;
+}
+
+function carDescriptionView(context) {
   let carId = context.params['id'];
   getCar(carId)
   .then(carInfo => {
     let templateResult = carDescriptionTemplate(carInfo);
-    renderView(templateResult);
+    renderHandler(templateResult);
   })
+}
+
+
+export default {
+  initialize,
+  carDescriptionView
 }

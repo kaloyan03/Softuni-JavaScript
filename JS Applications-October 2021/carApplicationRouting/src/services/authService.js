@@ -11,6 +11,10 @@ export function getUserId() {
     return localStorage.getItem('user-id');
 }
 
+export function isAuthenticated() {
+    return Boolean(localStorage.getItem('user-id'));
+}
+
 export function getAuthToken() {
     return localStorage.getItem('auth-token');
 }
@@ -20,17 +24,11 @@ export function clearStorage() {
 }
 
 export function loginUser(userData) {
-    request.post(api.loginUrl, userData)
-    .then(result => {
-        saveDataToStorage(result['accessToken'], result['email'], result['_id'])
-    })
+    return request.post(api.loginUrl, userData)
 }
 
 export function registerUser(userData) {
-    request.post(api.registerUrl, userData)
-    .then(result => {
-        saveDataToStorage(result['accessToken'], result['email'], result['_id'])
-    })
+    return request.post(api.registerUrl, userData)
 }
 
 

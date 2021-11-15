@@ -1,5 +1,5 @@
 import { html } from '../../node_modules/lit-html/lit-html.js';
-import { renderView } from '../renderingMiddleware.js';
+
 const homePageTemplate = () => html`
     <section id='home-page'>
         <h3>Welcome to the Car Dealers!!!</h3>
@@ -7,7 +7,20 @@ const homePageTemplate = () => html`
     </section>
 `
 
-export function homePage(context) {
+let route = undefined;
+let renderHandler = undefined;
+
+function initialize(givenRoute, givenRenderHandler) {
+    route = givenRoute;
+    renderHandler = givenRenderHandler;
+}
+
+function homeView() {
     let templateResult = homePageTemplate();
-    renderView(templateResult);
+    renderHandler(templateResult);
+}
+
+export default {
+    homeView,
+    initialize,
 }

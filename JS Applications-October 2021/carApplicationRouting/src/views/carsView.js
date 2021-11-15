@@ -1,8 +1,5 @@
 import { html } from '../../node_modules/lit-html/lit-html.js';
-
-
 import { getCars } from '../services/carsService.js';
-import { renderView } from '../renderingMiddleware.js';
 
 const carsTemplate = (cars) => html`
     <section id='car-page'>
@@ -22,11 +19,23 @@ const carTemplate = (car) => html`
 </div>
 `
 
+let route = undefined;
+let renderHandler = undefined;
 
-export function carsPage(context) {
+function initialize(givenRoute, givenRenderHandler) {
+    route = givenRoute;
+    renderHandler = givenRenderHandler;
+}
+
+function carsView() {
     getCars()
     .then(carsInfo => {
         let templateResult = carsTemplate(Object.values(carsInfo));
-        renderView(templateResult);
+        renderHandler(templateResult);
     })
+}
+
+export default {
+    initialize,
+    carsView,
 }

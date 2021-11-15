@@ -1,8 +1,7 @@
 import { html } from '../../node_modules/lit-html/lit-html.js';
 
 
-import { loginUser } from '../services/authService.js';
-import { renderView } from '../renderingMiddleware.js';
+import { loginUser, saveDataToStorage } from '../services/authService.js';
 
 const loginPageTemplate = (submitHandler) => html`
     <section id='login-page'>
@@ -25,20 +24,35 @@ const loginPageTemplate = (submitHandler) => html`
     </section>
 `
 
-export function loginPage(context) {
-    const submitHandler = (e) => {
-        e.preventDefault();
-        let formData = new FormData(e.target);
-        let user = {
-            email: formData.get('email'),
-            password: formData.get('password'),
-        }
+let route = undefined;
+let renderHandler = undefined;
 
-        loginUser(user)
+function initialize(givenRoute, givenRenderHandler) {
+    route = givenRoute;
+    renderHandler = givenRenderHandler;
+}
 
-        context.page.redirect('/home');
+const submitHandler = (e) => {
+    e.preventDefault();
+    let formData = new FormData(e.target);
+    let user = {
+        email: formData.get('email'),
+        password: formData.get('password'),
     }
 
+    loginUser(user)
+    .then(result => {
+        saveDataToStorage(result['accessToken'], result['email'], result['_id'])
+        route.redirect('/home');
+    })
+}
+
+export function loginView() {
     let templateResult = loginPageTemplate(submitHandler);
-    renderView(templateResult);
+    renderHandler(templateResult);
+}
+
+export default {
+    initialize,
+    loginView,
 }
