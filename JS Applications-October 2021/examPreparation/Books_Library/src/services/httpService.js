@@ -1,6 +1,6 @@
 import { getAuthToken } from './authService.js';
 
-export function request(method, url, body ,isAuthorized, skipResult) {
+function request(method, url, body ,isAuthorized, skipResult) {
     let options = {
         method,
         headers: {},
@@ -13,7 +13,7 @@ export function request(method, url, body ,isAuthorized, skipResult) {
     }
 
     if (isAuthorized) {
-        options['X-Authorization'] = getAuthToken();
+        options['headers']['X-Authorization'] = getAuthToken();
     }
 
     if (skipResult) {
@@ -22,3 +22,9 @@ export function request(method, url, body ,isAuthorized, skipResult) {
 
     return fetch(url, options).then(body => body.json())
 }
+
+
+export const get = request.bind(null, 'GET')
+export const post = request.bind(null, 'POST')
+export const put = request.bind(null, 'PUT')
+export const del = request.bind(null, 'DELETE')

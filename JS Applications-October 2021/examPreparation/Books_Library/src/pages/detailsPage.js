@@ -1,16 +1,23 @@
 import { html } from '../../node_modules/lit-html/lit-html.js';
+import { getUserId } from '../services/authService.js';
 
-const detailsPageTemplate = () => html`
+
+import { getBook, deleteBook } from '../services/booksService.js';
+const detailsPageTemplate = (model) => html`
 <!-- Details Page ( for Guests and Users ) -->
 <section id="details-page" class="details">
     <div class="book-information">
-        <h3>A Court of Thorns and Roses</h3>
-        <p class="type">Type: Fiction</p>
-        <p class="img"><img src="/images/book1.png"></p>
+        <h3>${model['book']['title']}</h3>
+        <p class="type">Type: ${model['book']['type']}</p>
+        <p class="img"><img src="${model['book']['imageUrl']}"></p>
         <div class="actions">
+            ${model['bookCreator']
+            ? html`
             <!-- Edit/Delete buttons ( Only for creator of this book )  -->
-            <a class="button" href="#">Edit</a>
-            <a class="button" href="#">Delete</a>
+            <a class="button" href="/edit/${model['book']['_id']}">Edit</a>
+            <a class="button" @click='${model['deleteHandler']}' href="#">Delete</a>
+            `
+            : ''}
 
             <!-- Bonus -->
             <!-- Like button ( Only for logged-in users, which is not creators of the current book ) -->
@@ -26,20 +33,42 @@ const detailsPageTemplate = () => html`
     </div>
     <div class="book-description">
         <h3>Description:</h3>
-        <p>Feyre's survival rests upon her ability to hunt and kill – the forest where she lives is a cold,
-            bleak place in the long winter months. So when she spots a deer in the forest being pursued by a
-            wolf, she cannot resist fighting it for the flesh. But to do so, she must kill the predator and
-            killing something so precious comes at a price ...</p>
+        <p>${model['book']['description']}</p>
     </div>
 </section>
 `
 
-function initialize() {
+let _router = undefined;
+let _renderHandler
 
+
+function initialize(givenRouter, givenRenderer) {
+    _router = givenRouter;
+    _renderHandler = givenRenderer;
 }
 
-function viewPage() {
+let bookId = undefined;
 
+function deleteHandler(e) {
+    e.preventDefault();
+    deleteBook(bookId)
+    .then(() => {
+        _router.redirect('/dashboards')
+    })
+}
+
+function viewPage(context) {
+    bookId = context.params['id'];
+    getBook(bookId)
+    .then(result => {
+        let viewModel = {
+            book: result,
+            bookCreator: getUserId() == result['_ownerId'],
+            deleteHandler,
+        }
+        let templateResult = detailsPageTemplate(viewModel);
+        _renderHandler(templateResult);
+    })
 }
 
 export default {

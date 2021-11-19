@@ -1,9 +1,13 @@
 import { html } from '../../node_modules/lit-html/lit-html.js';
 
-const createPageTemplate = () => html`
+
+import helper from '../helper.js';
+import { createBook } from '../services/booksService.js';
+
+const createPageTemplate = (model) => html`
 <!-- Create Page ( Only for logged-in users ) -->
 <section id="create-page" class="create">
-    <form id="create-form" action="" method="">
+    <form id="create-form" action="" method="" @submit='${model['submitHandler']}'>
         <fieldset>
             <legend>Add new Book</legend>
             <p class="field">
@@ -42,12 +46,51 @@ const createPageTemplate = () => html`
 </section>
 `
 
-function initialize() {
+let _router = undefined;
+let _renderHandler
+
+
+function initialize(givenRouter, givenRenderer) {
+    _router = givenRouter;
+    _renderHandler = givenRenderer;
+}
+
+function submitHandler(e) {
+    e.preventDefault();
+    let formElement = e.target;
+    let formData = new FormData(formElement);
+    
+    let title = formData.get('title');
+    let description = formData.get('description');
+    let imageUrl = formData.get('imageUrl');
+    let type = formData.get('type');
+
+    let book = {
+        title,
+        description,
+        imageUrl,
+        type,
+    }
+
+    if (!helper.checkIfInputFieldsAreFilled(title, description, image, type)) {
+        alert('All fields must be filled!');
+        return;
+    }
+
+    createBook(book)
+    .then(() => {
+        _router.redirect('/dashboards');
+    })
 
 }
 
 function viewPage() {
+    let viewModel = {
+        submitHandler,
 
+    }
+    let templateResult = createPageTemplate(viewModel);
+    _renderHandler(templateResult);
 }
 
 export default {

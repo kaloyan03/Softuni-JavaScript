@@ -1,8 +1,12 @@
 import { html } from '../../node_modules/lit-html/lit-html.js';
 
-const registerPageTemplate = () => html`
+
+import helper from '../helper.js';
+import { registerUser, saveDataToStorage } from '../services/authService.js';
+
+const registerPageTemplate = (model) => html`
 <!-- Register Page ( Only for Guest users ) -->
-<section id="register-page" class="register">
+<section id="register-page" class="register" @submit=${model['submitHandler']}>
     <form id="register-form" action="" method="">
         <fieldset>
             <legend>Register Form</legend>
@@ -39,8 +43,51 @@ function initialize(givenRouter, givenRenderer) {
     _renderHandler = givenRenderer;
 }
 
+function submitHandler(e) {
+    e.preventDefault();
+    let formElement = e.target;
+    let formData = new FormData(formElement);
+
+    let email = formData.get('email');
+    let password = formData.get('password');
+    let repeatedPassword = formData.get('confirm-pass');
+
+    if (!helper.checkIfInputFieldsAreFilled(email, password, repeatedPassword)) {
+        alert('All fields must be filled!');
+        return;
+    }
+
+    if(!helper.checkIfPasswordsMatch(password, repeatedPassword)) {
+        alert('Passwords must match!');
+        return;
+    }
+
+    let user = {
+        email,
+        password,
+    }
+
+    registerUser(user)
+        .then(result => {
+            if (result.code >= 300) {
+                throw new Error(result['message']);
+            }
+            saveDataToStorage(result['accessToken'], result['email'], result['_id']);
+            _router.redirect('/dashboards');
+        })
+        .catch(error => {
+            alert(error);
+            formElement.reset();
+            return;
+        })
+
+}
+
 function viewPage() {
-    let templateResult = registerPageTemplate();
+    let viewModel = {
+        submitHandler,
+    }
+    let templateResult = registerPageTemplate(viewModel);
     _renderHandler(templateResult);
 }
 
