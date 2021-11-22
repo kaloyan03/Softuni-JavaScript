@@ -24,3 +24,15 @@ export function createBook(body) {
 export function deleteBook(id) {
     return request.del(`${api.deleteBook(id)}`, undefined, true, true)
 }
+
+export function likeBook(body) {
+    return request.post(`${api.postLikeBook}`, body, true, true)
+}
+
+export function getBookLikes(id) {
+    return request.get(`${api.getLikeBook(id)}`, undefined)
+}
+
+export function getBookUserLike(userId, bookId) {
+    return request.get(`${api.getLikeFromUser(bookId, userId)}`, undefined, true)
+}

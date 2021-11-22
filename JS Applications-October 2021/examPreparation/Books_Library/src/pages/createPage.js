@@ -47,7 +47,7 @@ const createPageTemplate = (model) => html`
 `
 
 let _router = undefined;
-let _renderHandler
+let _renderHandler = undefined;
 
 
 function initialize(givenRouter, givenRenderer) {
