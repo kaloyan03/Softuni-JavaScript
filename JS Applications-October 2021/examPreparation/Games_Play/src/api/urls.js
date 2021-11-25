@@ -11,3 +11,6 @@ export let createGameUrl = `${baseUrl}/data/games`;
 export let getGameUrl  = (gameId) => `${baseUrl}/data/games/${gameId}`;
 export let editGameUrl = (gameId) =>`${baseUrl}/data/games/${gameId}`;
 export let deleteGameUrl = (gameId) => `${baseUrl}/data/games/${gameId}`;
+
+export let gameCommentsUrl = (gameId) => `${baseUrl}/data/comments?where=gameId%3D%22${gameId}%22`;
+export let postCommentUrl = `${baseUrl}/data/comments`;

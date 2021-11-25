@@ -18,11 +18,19 @@ export async function createGame(data) {
     return api.create(url.createGameUrl, data);
 }
 
-export async function editGame(data) {
-    return api.post(url.editGameUrl, data);
+export async function editGame(data, id) {
+    return api.put(url.editGameUrl(id), data);
 }
 
 export async function deleteGame(gameId) {
-    return api.get(url.deleteGameUrl(gameId));
+    return api.del(url.deleteGameUrl(gameId));
+}
+
+export async function loadAllGameComments(gameId) {
+    return api.get(url.gameCommentsUrl(gameId))
+}
+
+export async function createGameComment(data) {
+    return api.post(url.postCommentUrl, data)
 }
 

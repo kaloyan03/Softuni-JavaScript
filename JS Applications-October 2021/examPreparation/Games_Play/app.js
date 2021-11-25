@@ -18,7 +18,7 @@ page('/register', registerView)
 page('/login', loginView)
 page('/home', homeView)
 page('/create', createView)
-page('/edit', editView)
+page('/edit/:id', editView)
 page('/details/:id', detailsView)
 page('/catalogue', catalogueView)
 

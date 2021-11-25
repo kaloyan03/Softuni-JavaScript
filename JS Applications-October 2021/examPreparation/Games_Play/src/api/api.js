@@ -1,4 +1,4 @@
-import { getUserToken } from "../services/authService.js";
+import { getUserToken, isAuthenticated} from "../services/authService.js";
 
 async function request(url, options, skipResult) {
     try {
@@ -24,7 +24,7 @@ async function request(url, options, skipResult) {
 }
 
 
-function createOptions(method='GET', data, authorizedRequest) {
+function createOptions(method='GET', data) {
     let options = {
         method,
         headers: {},
@@ -35,7 +35,7 @@ function createOptions(method='GET', data, authorizedRequest) {
         options['body'] = JSON.stringify(data);
     }
 
-    if (authorizedRequest) {
+    if (isAuthenticated() == true) {
         options['headers']['X-Authorization'] = getUserToken();
     }
     
@@ -56,7 +56,7 @@ export async function put(url, data) {
 }
 
 export async function del(url) {
-    return request(url, createOptions('DELETE'))
+    return request(url, createOptions('DELETE', undefined, true))
 }
 
 export async function logout(url) {
