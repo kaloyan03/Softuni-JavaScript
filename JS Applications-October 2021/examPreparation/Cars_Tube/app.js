@@ -9,6 +9,7 @@ import create from './src/views/create.js';
 import details from './src/views/details.js';
 import edit from './src/views/edit.js';
 import myListings from './src/views/myListings.js';
+import search from './src/views/search.js';
 
 let mainRoot = document.querySelector('#site-content');
 let navRoot = document.querySelector('#nav-root');
@@ -25,6 +26,7 @@ page('/create', create.viewPage)
 page('/details/:id', details.viewPage)
 page('/edit/:id', edit.viewPage)
 page('/my-listings', myListings.viewPage)
+page('/search-by-year', search.viewPage)
 
 page.start();
 

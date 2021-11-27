@@ -10,5 +10,6 @@ export let getListingUrl = (carId) => `${baseUrl}/data/cars/${carId}`;
 export let editListingUrl = (carId) => `${baseUrl}/data/cars/${carId}`;
 export let deleteListingUrl = (carId) => `${baseUrl}/data/cars/${carId}`;
 export let getMyListingUrl = (userId) => `${baseUrl}/data/cars?where=_ownerId%3D%22${userId}%22&sortBy=_createdOn%20desc`;
+export let getCarsByYearUrl = (query) => `${baseUrl}/data/cars?where=year%3D${query}`;
 
 

@@ -51,25 +51,25 @@ function submitHandler(e) {
     let imageUrl = formData.get('imageUrl');
     let price = formData.get('price');
 
-    if (brand == '' || model == '' || description == '' || year == '' || imageUrl == '' || price == '') {
-        alert('All fields must be filled!');
+    if (year <= 0) {
+        alert('Year must be positive number!');
         return;
     }
 
-    if (year <= 0 || price <= 0) {
-        alert('Year and Price must be positive numbers!');
+    if (price <= 0) {
+        alert('Price must be positive number!');
         return;
     }
 
     formElement.reset();
-
+    
     let car = {
         brand,
         model,
         description,
-        year,
+        year: Number(year),
         imageUrl,
-        price,
+        price: Number(price),
     }
     let carId = cntxt.params['id'];
 

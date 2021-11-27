@@ -68,9 +68,9 @@ function submitHandler(e) {
         brand,
         model,
         description,
-        year,
+        year: Number(year),
         imageUrl,
-        price,
+        price: Number(price),
     }
 
     createListing(car)

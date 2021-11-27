@@ -7,3 +7,5 @@ export function getListing(id) {return request.get(url.getListingUrl(id))}
 export function editListing(id, data) {return request.put(url.editListingUrl(id), data)}
 export function deleteListing(id) {return request.del(url.deleteListingUrl(id))}
 export function getMyListings(id) {return request.get(url.getMyListingUrl(id))}
+export function getCarsByYear(query) {return request.get(url.getCarsByYearUrl(query))}
+

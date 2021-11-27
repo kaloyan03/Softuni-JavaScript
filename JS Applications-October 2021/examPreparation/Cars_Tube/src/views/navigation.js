@@ -7,7 +7,7 @@ const navigationTemplate = (model) => html`
 <nav>
     <a class="active" href="/home">Home</a>
     <a href="/all-listings">All Listings</a>
-    <a href="/all-listing">By Year</a>
+    <a href="/search-by-year">By Year</a>
     ${model['isAuthenticated']
     ? html`
      <!-- Logged users -->
